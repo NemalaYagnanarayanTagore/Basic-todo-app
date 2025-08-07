@@ -1,6 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import { FlatList, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { Checkbox } from "expo-checkbox"
 
 export default function Index() {
 
@@ -53,10 +54,24 @@ export default function Index() {
         <TextInput placeholder="Search" style={styles.searhInput} />
       </View>
       <FlatList data={todoData} keyExtractor={(item) => item.id.toString()} renderItem={({item}) => (
-        <View>
-          <Text>{item.title}</Text>
+        <View style={styles.todoContainer}>
+          <View style={styles.todoInfoContainer}>
+            <Checkbox value={item.isDone} />
+            <Text style={[styles.todoText, item.isDone && {textDecorationLine:"line-through"}]}>{item.title}</Text>
+          </View>
+          <TouchableOpacity onPress={()=>{
+            alert("Deleted " + item.id)
+          }}>
+            <Ionicons name="trash" size={24} color='red' />
+          </TouchableOpacity>
         </View>
       )} />
+      <View style={styles.footer}>
+        <TextInput placeholder="Add new todo!!" style={styles.newTodoInput} />
+        <TouchableOpacity style={styles.addButton} onPress={() => {}}>
+          <Ionicons name="add" size={34} color={'#fff'} />
+        </TouchableOpacity>
+      </View>
     </SafeAreaView>
   );
 }
@@ -86,5 +101,41 @@ const styles = StyleSheet.create({
     flex:1, 
     fontSize:16,
     color: '#333',
-  }
+  },
+  todoContainer:{
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    backgroundColor: '#fff',
+    padding: 16,
+    borderRadius: 10,
+    marginBottom: 20,
+  },
+  todoInfoContainer:{
+    flexDirection: 'row',
+    gap:10,
+    alignItems: 'center',
+  },
+  todoText:{
+    fontSize: 16,
+    color: '#333',
+  },
+  footer:{
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  newTodoInput:{
+    flex: 1,
+    backgroundColor: '#fff',
+    padding: 16,
+    borderRadius: 10,
+    fontSize: 16,
+    color: '#333',
+  },
+  addButton:{
+    backgroundColor:'green',
+    padding: 8,
+    borderRadius: 10,
+    marginLeft: 20,
+  },
 });
